@@ -10,6 +10,7 @@ const {
     GraphQLID,
     GraphQLInt,
     GraphQLList,
+    GraphQLNonNull,
 } = graphql;
 
 // dummy data
@@ -103,19 +104,19 @@ const Mutation = new GraphQLObjectType({
         addBook: {
             type: BookType,
             args: {
-                name: { type: GraphQLString },
-                genre: { type: GraphQLString },
-                authorid: { type: GraphQLID },
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                genre: { type: new GraphQLNonNull(GraphQLString) },
+                authorId: { type: new GraphQLNonNull(GraphQLID) }
             },
             resolve(parent, args) {
-                const book = new Book({
+                let book = new Book({
                     name: args.name,
                     genre: args.genre,
-                    authorid: args.authorid,
+                    authorId: args.authorId,
                 });
                 return book.save();
-            },
-        },
+            }
+        }
     },
 });
 
